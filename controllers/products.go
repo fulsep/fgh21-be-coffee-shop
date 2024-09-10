@@ -285,7 +285,8 @@ func UploadProductImage(c *gin.Context) {
 		}
 		
 		prefix := os.Getenv("APP_URL")
-		locationFile := fmt.Sprintf("%s/img/product/%s",prefix, file)
+		add := os.Getenv("APP_PREFIX")
+		locationFile := fmt.Sprintf("%s%s/img/product/%s", prefix, add, file)
 
 		fmt.Println(locationFile)
 		dataImage, _ := repository.UploadProductImage(models.ProductImage{

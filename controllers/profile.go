@@ -236,7 +236,8 @@ func UploadProfileImage(c *gin.Context) {
 	}
 
 	prefix := os.Getenv("APP_URL")
-	fileUrl := fmt.Sprintf("%s/img/product/%s",prefix, newFile)
+	add := os.Getenv("APP_PREFIX")
+	fileUrl := fmt.Sprintf("%s%s/img/product/%s", prefix, add, newFile)
 
 	delImgBefore, _ := repository.FindProfileById(id)
 	if delImgBefore.Image != nil {
@@ -288,7 +289,8 @@ func UploadProfileImageForAdmin(c *gin.Context) {
 	}
 
 	prefix := os.Getenv("APP_URL")
-	fileUrl := fmt.Sprintf("%s/img/product/%s",prefix, newFile)
+	add := os.Getenv("APP_PREFIX")
+	fileUrl := fmt.Sprintf("%s%s/img/product/%s", prefix, add, newFile)
 
 	delImgBefore, _ := repository.FindProfileById(id)
 	if delImgBefore.Image != nil {

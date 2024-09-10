@@ -172,7 +172,8 @@ func CreateUserWithProfile(c *gin.Context) {
 	}
 
 	prefix := os.Getenv("APP_URL")
-	imageURL := fmt.Sprintf("%s/img/product/%s",prefix, newFileName)
+	add := os.Getenv("APP_PREFIX")
+	imageURL := fmt.Sprintf("%s/img/product/%s", prefix, add, newFileName)
 
 	profile, err := repository.CreateinsertProfile(models.InsertProfile{
 		FullName:    input.FullName,
