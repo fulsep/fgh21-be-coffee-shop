@@ -10,9 +10,11 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
 )
 
 func CreateProduct(c *gin.Context) {
@@ -244,6 +246,10 @@ func ListIdOurProductsWithPagination(c *gin.Context) {
 }
 
 func UploadProductImage(c *gin.Context) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	productId, _ := strconv.Atoi(c.Param("id"))
 	maxFile := 500 * 1024
 
@@ -277,8 +283,10 @@ func UploadProductImage(c *gin.Context) {
 			lib.HandlerBadReq(c, "upload failed")
 			return
 		}
+		
+		prefix := os.Getenv("APP_URL")
+		locationFile := fmt.Sprintf("%s/img/product/%s",prefix, file)
 
-		locationFile := "http://localhost:8000/img/product/" + file
 		fmt.Println(locationFile)
 		dataImage, _ := repository.UploadProductImage(models.ProductImage{
 			Image:     locationFile,

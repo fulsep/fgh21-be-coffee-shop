@@ -8,9 +8,13 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"os"
+	"fmt"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
 )
 
 func GetAllUsers(c *gin.Context) {
@@ -122,6 +126,10 @@ func DeleteUserById(c *gin.Context) {
 }
 
 func CreateUserWithProfile(c *gin.Context) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	var input dtos.CreateUserProfileInput
 
 	if err := c.Bind(&input); err != nil {
@@ -163,7 +171,8 @@ func CreateUserWithProfile(c *gin.Context) {
 		return
 	}
 
-	imageURL := "http://localhost:8000/img/profile/" + newFileName
+	prefix := os.Getenv("APP_URL")
+	imageURL := fmt.Sprintf("%s/img/product/%s",prefix, newFileName)
 
 	profile, err := repository.CreateinsertProfile(models.InsertProfile{
 		FullName:    input.FullName,

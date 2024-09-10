@@ -1,8 +1,12 @@
-host ?= 172.17.0.2
-port ?= 5432
-user ?= postgres
-pass ?= 1
-db ?= konis
+include .env
+
+$(eval export $(shell sed -ne 's/ *#.*$$//; /./ s/=.*$$// p' .env))
+
+host ?= ${DB_HOST}
+port ?= ${DB_PORT}
+user ?= ${DB_USER}
+pass ?= ${DB_PASS}
+db ?= ${DB_NAME}
 
 migrate\:init:
 	PGPASSWORD=$(pass) psql -U$(user) -d postgres -h $(host) -p $(port) -c "create database $(db);"

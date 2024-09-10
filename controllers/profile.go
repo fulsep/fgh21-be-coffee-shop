@@ -235,7 +235,8 @@ func UploadProfileImage(c *gin.Context) {
 		return
 	}
 
-	tes := "http://localhost:8000/img/profile/" + newFile
+	prefix := os.Getenv("APP_URL")
+	fileUrl := fmt.Sprintf("%s/img/product/%s",prefix, newFile)
 
 	delImgBefore, _ := repository.FindProfileById(id)
 	if delImgBefore.Image != nil {
@@ -243,7 +244,7 @@ func UploadProfileImage(c *gin.Context) {
 		os.Remove("." + fileDel)
 	}
 
-	profile, err := repository.UpdateProfileImage(models.Profile{Image: &tes}, id)
+	profile, err := repository.UpdateProfileImage(models.Profile{Image: &fileUrl}, id)
 	if err != nil {
 		lib.HandlerBadReq(c, "upload failed")
 		return
@@ -286,7 +287,8 @@ func UploadProfileImageForAdmin(c *gin.Context) {
 		return
 	}
 
-	tes := "http://localhost:8000/img/profile/" + newFile
+	prefix := os.Getenv("APP_URL")
+	fileUrl := fmt.Sprintf("%s/img/product/%s",prefix, newFile)
 
 	delImgBefore, _ := repository.FindProfileById(id)
 	if delImgBefore.Image != nil {
@@ -294,7 +296,7 @@ func UploadProfileImageForAdmin(c *gin.Context) {
 		os.Remove("." + fileDel)
 	}
 
-	profile, err := repository.UpdateProfileImage(models.Profile{Image: &tes}, id)
+	profile, err := repository.UpdateProfileImage(models.Profile{Image: &fileUrl}, id)
 	if err != nil {
 		lib.HandlerBadReq(c, "upload failed")
 		return
